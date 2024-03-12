@@ -10,6 +10,6 @@
     Height="450"
     mc:Ignorable="d">
     <Grid>
-
+        <Image x:Name="Img" />
     </Grid>
 </Window>

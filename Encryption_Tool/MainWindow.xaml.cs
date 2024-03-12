@@ -9,6 +9,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using System.Security.Cryptography;
+using Encryption_Tool.Service;
+
 namespace Encryption_Tool
 {
 	/// <summary>
@@ -19,6 +22,18 @@ namespace Encryption_Tool
 		public MainWindow()
 		{
 			InitializeComponent();
+
+			Img.Source = ;
+		}
+
+		private void TestTekst()
+		{
+			Aes aes = Aes.Create();
+			string text = "Dit is een test";
+			byte[] encrypted = AesCrypto.EncryptText(aes, text);
+			MessageBox.Show(new string(encrypted.Select(Convert.ToChar).ToArray()));
+			text = AesCrypto.DecryptText(aes, encrypted);
+			MessageBox.Show(text);
 		}
 	}
 }
