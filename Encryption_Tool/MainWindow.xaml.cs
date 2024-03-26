@@ -22,39 +22,16 @@ namespace Encryption_Tool
 		public MainWindow()
 		{
 			InitializeComponent();
-			EncryptionEngine.CryptoEngine engine = new();
-			RSAParameters encryptionParameters = new();
-			RSAParameters decryptionParameters = new();
-			RSAEncryptionPadding padding = RSAEncryptionPadding.CreateOaep(HashAlgorithmName.SHA256);
-			using (RSA Rsa = RSA.Create())
-			{
-				encryptionParameters = Rsa.ExportParameters(false);
-				decryptionParameters = Rsa.ExportParameters(true);
-			}
-			UnicodeEncoding byteConverter = new();
-			byte[] dataToEncrypt = byteConverter.GetBytes("This is a test");
-			CryptoParameters parameters = new()
-			{
-				RSAParameters = encryptionParameters,
-				RSAEncryptionPadding = padding,
-			};
-			EncryptionRequest request = new()
-			{
-                DataToEncrypt = dataToEncrypt,
-				EncryptionType = EncryptionType.RSA,
-				Parameters = parameters
-            };
-			var response = engine.Encrypt(request);
-			parameters.RSAParameters = decryptionParameters;
-			DecryptionRequest decryptRequest = new()
-			{
-				DataToDecrypt = response.Data,
-				EncryptionType = EncryptionType.RSA,
-				Parameters = parameters
-			};
-			var decryptResponse = engine.Decryption(decryptRequest);
-			string decryptedData = byteConverter.GetString(decryptResponse.Data);
-			_ = 0;
 		}
-	}
+
+        private void btnKeyGeneration_Click(object sender, RoutedEventArgs e)
+        {
+            string publicKey;
+            string privateKey;
+
+            KeyHelper.SaveKeys(out publicKey, out privateKey);
+            txtPublicKey.Text = publicKey;
+            txtPrivateKey.Text = privateKey;
+        }
+    }
 }

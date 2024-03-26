@@ -10,6 +10,9 @@
     Height="450"
     mc:Ignorable="d">
     <Grid>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="310,171,0,0" VerticalAlignment="Top" Height="66" Width="130" Name="btnKeyGeneration" Click="btnKeyGeneration_Click" />
+        <TextBox HorizontalAlignment="Left" Height="225" Margin="40,83,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="207" Name="txtPrivateKey"/>
+        <TextBox HorizontalAlignment="Left" Height="225" Margin="516,83,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="217" Name="txtPublicKey"/>
 
     </Grid>
 </Window>
