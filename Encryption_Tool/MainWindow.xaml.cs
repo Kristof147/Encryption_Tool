@@ -62,6 +62,18 @@ namespace Encryption_Tool
 			Aes aes = Aes.Create();
 			aes.GenerateKey();
 			aes.GenerateIV();
+			// ToBase64
+			string keyAesBase64 = Convert.ToBase64String(aes.Key);
+			string ivAesBase64 = Convert.ToBase64String(aes.IV);
+			// FromBase64
+			var key = Convert.FromBase64String(keyAesBase64);
+			var iv = Convert.FromBase64String(ivAesBase64);
+
+			if (aes.Key.SequenceEqual(key) && aes.IV.SequenceEqual(iv))
+				MessageBox.Show("ok");
+			else
+				MessageBox.Show("nok");
+
 			CryptoParameters cryptoParameters = new()
 			{
 				Aes = aes
