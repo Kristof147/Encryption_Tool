@@ -10,9 +10,77 @@
     Height="450"
     mc:Ignorable="d">
     <Grid>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="310,171,0,0" VerticalAlignment="Top" Height="66" Width="130" Name="btnKeyGeneration" Click="btnKeyGeneration_Click" />
-        <TextBox HorizontalAlignment="Left" Height="225" Margin="40,83,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="207" Name="txtPrivateKey"/>
-        <TextBox HorizontalAlignment="Left" Height="225" Margin="516,83,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="217" Name="txtPublicKey"/>
+
+        <TabControl>
+            <TabItem Header="Key Generation">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition ></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Button Grid.Column="1" Margin="20,20,20,20" Content="Set folder" Name="BtnFolderKey" ></Button>
+                    <Button Grid.Column="2" Margin="20,20,20,20" Content="Generate AES key/ IV" Name="BtnAes"></Button>
+                    <Button Grid.Column="3" Margin="20,20,20,20" Content="Generate RSA key pair"></Button>
+                </Grid>
+
+            </TabItem>
+            <TabItem Header="AES">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Content="Key:"></Label>
+                    <ComboBox Name="CmbAESKeys" Margin="35"></ComboBox>
+                    <Button Grid.Column="4" Margin="20" Content="Set folder"  ></Button>
+                    <Button Grid.Column="1" Margin="20" Content="Encrypt"  ></Button>
+                    <Button Grid.Column="2" Margin="20" Content="Decrypt" ></Button>
+                    <Button Grid.Column="3" Margin="20" Content="Select Image"></Button>
+                </Grid>
+            </TabItem>
+            <TabItem Header="RSA">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Content="Public key:"></Label>
+                    <ComboBox Name="CmbRSAPubKey" Margin="35"></ComboBox>
+                    <Label Content="Private key:" Grid.Row="1"></Label>
+                    <ComboBox Name="CmbRSAPriKey" Margin="35" Grid.Row="1"></ComboBox>
+                    <Button Grid.Column="1" Margin="20" Content="AES" ></Button>
+                    <Button Grid.Column="2" Margin="20" Content="RSA" ></Button>
+                    <Button Grid.Column="3" Margin="20" Content="Select Image"></Button>
+                </Grid>
+            </TabItem>
+        </TabControl>
 
     </Grid>
 </Window>
