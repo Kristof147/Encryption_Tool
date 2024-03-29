@@ -22,11 +22,18 @@ namespace Encryption_Tool
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+      
         private Dictionary<string, string>? aesKeysDict;
+        private readonly FileManager fm;
+        string keyDirectoryPath = @"C:\test";
+        string imageDirectoryPath = @"C:\test";
+        string aESDirectoryPath = @"C:\test";
         public MainWindow()
-		{
-			InitializeComponent();
-		}
+        {
+            InitializeComponent();
+            InitializeKeys();
+            fm = new FileManager();
+        }
 
         private void btnKeyGeneration_Click(object sender, RoutedEventArgs e)
         {
@@ -42,28 +49,97 @@ namespace Encryption_Tool
         private void InitializeKeys()
         {
             aesKeysDict = new Dictionary<string, string>();
+       
 
-            // Specify the directory path where your files are stored
-            string directoryPath = @"C:\Your\Directory\Path";
-
-            if (Directory.Exists(directoryPath))
+            if (Directory.Exists(keyDirectoryPath))
             {
-                // Get all files with a specific extension, e.g., .txt
-                string[] files = Directory.GetFiles(directoryPath, "*.txt");
+                string[] files = Directory.GetFiles(keyDirectoryPath, "*.txt");
 
                 foreach (string file in files)
                 {
                     string fileName = Path.GetFileName(file);
-                    string base64Key = File.ReadAllText(file).Trim(); // Assuming the key is stored in the file
+                    string base64Key = File.ReadAllText(file).Trim(); 
 
                     aesKeysDict.Add(fileName, base64Key);
-                    CmbAESKeys.Items.Add(fileName); // Add file names to ComboBox
+                    CmbAESKeys.Items.Add(fileName); 
                 }
             }
-            else
+           
+        }
+        #region key generation tab
+        private void BtnFolderKey_Click(object sender, RoutedEventArgs e)
+        {
+            string selectedDirectory = fm.SelectDirectory();
+            if (!string.IsNullOrEmpty(selectedDirectory))
             {
-                MessageBox.Show("Directory not found.");
+                keyDirectoryPath = selectedDirectory;
+                InitializeKeys();
             }
         }
+
+        private void BtnAES_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void BtnRSAPair_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+
+
+        #endregion
+        #region AES tab
+        private void BtnAESFolder_Click(object sender, RoutedEventArgs e)
+        {
+            string selectedDirectory = fm.SelectDirectory();
+            if (!string.IsNullOrEmpty(selectedDirectory))
+            {
+                imageDirectoryPath = selectedDirectory;
+                
+            }
+        }
+
+        private void BtnAESEncrypt_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnAESDecrypt_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnAESImage_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        #endregion
+        #region RSA tab
+        private void BtnRSAEncrypt_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void BtnRSADecrypt_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnRSAImage_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnRSAFolder_Click(object sender, RoutedEventArgs e)
+        {
+            string selectedDirectory = fm.SelectDirectory();
+            if (!string.IsNullOrEmpty(selectedDirectory))
+            {
+                aESDirectoryPath = selectedDirectory;
+
+            }
+        }
+#endregion
     }
 }
