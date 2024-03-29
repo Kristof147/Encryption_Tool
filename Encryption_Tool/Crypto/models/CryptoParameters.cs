@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Encryption_Tool.Service;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -11,8 +12,9 @@ namespace Encryption_Tool.EncryptionEngine.models
     {
         public RSAParameters? RSAParameters { get; set; }
         public RSAEncryptionPadding? RSAEncryptionPadding { get; set; }
-        public byte[]? Key { get; set; }
-        public byte[]? IV { get; set; }
+        //public byte[]? Key { get; set; }
+        //public byte[]? IV { get; set; }
+        public Aes? Aes { get; set; }
         public bool GetParameters(out RSAParameters rsaParams, out RSAEncryptionPadding padding)
         {
             rsaParams = new RSAParameters();
@@ -23,15 +25,13 @@ namespace Encryption_Tool.EncryptionEngine.models
             rsaParams = (RSAParameters)RSAParameters;
             return true;
         }
-        public bool GetParameters(out byte[] key, out byte[] iv)
+        public bool GetParameters(out Aes aes)
         {
-            key = [];
-            iv = [];
-            if (Key == null || IV == null)
-                return false;
-            
-            key = Key;
-            iv = IV;
+            aes = Aes;
+			if (Aes == null)
+				return false;
+			//if (aes.Key == null || aes.IV == null)
+   //             return false;
             return true;
         }
     }

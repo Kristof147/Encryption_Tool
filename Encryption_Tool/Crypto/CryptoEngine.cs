@@ -1,4 +1,5 @@
-﻿using Encryption_Tool.EncryptionEngine.Encryptors;
+﻿using Encryption_Tool.Crypto.Cryptors;
+using Encryption_Tool.EncryptionEngine.Encryptors;
 using Encryption_Tool.EncryptionEngine.models;
 
 namespace Encryption_Tool.EncryptionEngine
@@ -25,6 +26,7 @@ namespace Encryption_Tool.EncryptionEngine
             return type switch
             {
                 EncryptionType.RSA => new RSACryptor(),
+                EncryptionType.AES => new AESCryptor(),
                 _ => throw new NotImplementedException(),
             };
         }
