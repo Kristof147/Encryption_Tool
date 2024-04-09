@@ -113,10 +113,7 @@ namespace Encryption_Tool
 				Parameters = cryptoParameters
 			};
 			var imgDecryptResponse = engine.Decryption(imgDecryptionRequest);
-			ByteArrayToImage(imgDecryptResponse.Data);
-
-			var test = ImageToByteArray(imgPath);
-			ByteArrayToImage(test);
+			Img.Source = ByteArrayToImage(imgDecryptResponse.Data);
 
 		}
 
@@ -125,22 +122,21 @@ namespace Encryption_Tool
 			return File.ReadAllBytes(path);
 		}
 
-		private void ByteArrayToImage(byte[] data)
+		private BitmapImage ByteArrayToImage(byte[] data)
 		{
+			BitmapImage returnImage = new BitmapImage();
 			Application.Current.Dispatcher.Invoke(() =>
 			{
 				MemoryStream stream = new MemoryStream();
 				stream.Write(data, 0, data.Length);
 				stream.Position = 0;
-				BitmapImage returnImage = new BitmapImage();
 				returnImage.BeginInit();
 				returnImage.CacheOption = BitmapCacheOption.OnLoad;
 				returnImage.StreamSource = stream;
 				returnImage.EndInit();
 				returnImage.Freeze(); // Zorgt ervoor dat de afbeelding niet verandert nadat het is geladen
-
-				Img.Source = returnImage;
 			});
+			return returnImage;
 		}
 
 	}
