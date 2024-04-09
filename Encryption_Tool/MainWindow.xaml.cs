@@ -14,6 +14,9 @@ using System.Windows.Shapes;
 
 using System.Security.Cryptography;
 using Encryption_Tool.Service;
+using System.Drawing;
+using System.IO;
+using Image = System.Drawing.Image;
 
 namespace Encryption_Tool
 {
@@ -43,10 +46,10 @@ namespace Encryption_Tool
 			};
 			EncryptionRequest request = new()
 			{
-                DataToEncrypt = dataToEncrypt,
+				DataToEncrypt = dataToEncrypt,
 				EncryptionType = EncryptionType.RSA,
 				Parameters = parameters
-            };
+			};
 			var response = engine.Encrypt(request);
 			parameters.RSAParameters = decryptionParameters;
 			DecryptionRequest decryptRequest = new()
@@ -69,10 +72,10 @@ namespace Encryption_Tool
 			var key = Convert.FromBase64String(keyAesBase64);
 			var iv = Convert.FromBase64String(ivAesBase64);
 
-			if (aes.Key.SequenceEqual(key) && aes.IV.SequenceEqual(iv))
-				MessageBox.Show("ok");
-			else
-				MessageBox.Show("nok");
+			//if (aes.Key.SequenceEqual(key) && aes.IV.SequenceEqual(iv))
+			//	MessageBox.Show("ok");
+			//else
+			//	MessageBox.Show("nok");
 
 			CryptoParameters cryptoParameters = new()
 			{
@@ -94,6 +97,51 @@ namespace Encryption_Tool
 			var decryptResponse2 = engine.Decryption(decryptionRequestAes);
 			var decryptedData2 = byteConverter.GetString(decryptResponse2.Data);
 			_ = 0;
+
+			string imgPath = @"C:\Users\12201505\OneDrive - PXL\Afbeeldingen\Portfolio-ideas\cv idea 1.png";
+			EncryptionRequest imgRequest = new()
+			{
+				DataToEncrypt = ImageToByteArray(imgPath),
+				EncryptionType = EncryptionType.AES,
+				Parameters = cryptoParameters
+			};
+			response = engine.Encrypt(imgRequest);
+			DecryptionRequest imgDecryptionRequest = new()
+			{
+				DataToDecrypt = response.Data,
+				EncryptionType = EncryptionType.AES,
+				Parameters = cryptoParameters
+			};
+			var imgDecryptResponse = engine.Decryption(imgDecryptionRequest);
+			ByteArrayToImage(imgDecryptResponse.Data);
+
+			var test = ImageToByteArray(imgPath);
+			ByteArrayToImage(test);
+
 		}
+
+		byte[] ImageToByteArray(string path)
+		{
+			return File.ReadAllBytes(path);
+		}
+
+		private void ByteArrayToImage(byte[] data)
+		{
+			Application.Current.Dispatcher.Invoke(() =>
+			{
+				MemoryStream stream = new MemoryStream();
+				stream.Write(data, 0, data.Length);
+				stream.Position = 0;
+				BitmapImage returnImage = new BitmapImage();
+				returnImage.BeginInit();
+				returnImage.CacheOption = BitmapCacheOption.OnLoad;
+				returnImage.StreamSource = stream;
+				returnImage.EndInit();
+				returnImage.Freeze(); // Zorgt ervoor dat de afbeelding niet verandert nadat het is geladen
+
+				Img.Source = returnImage;
+			});
+		}
+
 	}
 }
