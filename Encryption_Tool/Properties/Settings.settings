@@ -5,5 +5,14 @@
     <Setting Name="KeyDirectoryPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\</Value>
     </Setting>
+    <Setting Name="AesFolderPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\</Value>
+    </Setting>
+    <Setting Name="RsaFolderPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\</Value>
+    </Setting>
+    <Setting Name="AesImagePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

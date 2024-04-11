@@ -34,5 +34,41 @@ namespace Encryption_Tool.Properties {
                 this["KeyDirectoryPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\")]
+        public string AesFolderPath {
+            get {
+                return ((string)(this["AesFolderPath"]));
+            }
+            set {
+                this["AesFolderPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\")]
+        public string RsaFolderPath {
+            get {
+                return ((string)(this["RsaFolderPath"]));
+            }
+            set {
+                this["RsaFolderPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\")]
+        public string AesImagePath {
+            get {
+                return ((string)(this["AesImagePath"]));
+            }
+            set {
+                this["AesImagePath"] = value;
+            }
+        }
     }
 }

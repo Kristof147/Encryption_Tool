@@ -60,7 +60,7 @@ namespace Encryption_Tool.Crypto.Cryptors
 				}
 				catch (CryptographicException ex)
 				{
-					MessageBox.Show("Er is een fout opgetreden bij het decrypteren: " + ex.Message);
+					result.Errors.Add(ex.Message);
 				}
 
 			}
