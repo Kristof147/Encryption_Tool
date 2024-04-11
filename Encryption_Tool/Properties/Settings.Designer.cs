@@ -70,5 +70,17 @@ namespace Encryption_Tool.Properties {
                 this["AesImagePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\")]
+        public string AesTextPath {
+            get {
+                return ((string)(this["AesTextPath"]));
+            }
+            set {
+                this["AesTextPath"] = value;
+            }
+        }
     }
 }
