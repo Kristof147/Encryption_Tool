@@ -232,13 +232,34 @@ namespace Encryption_Tool
 				MessageBox.Show("Er is een fout opgetreden:\n" + ex.Message);
 			}
 		}
-		// Load Local Image
+		// Image
 		private void BtnAESImage_Click(object sender, RoutedEventArgs e)
 		{
 			aesImagePath = ImageHelper.LoadImage();
 			if (!string.IsNullOrEmpty(aesImagePath))
 			{
 				ImageAes.Source = new BitmapImage(new Uri(aesImagePath));
+			}
+		}
+		private void BtnAesSaveImage_Click(object sender, RoutedEventArgs e)
+		{
+			if (ImageAes.Source == null)
+				return;
+
+			Microsoft.Win32.SaveFileDialog sfd = new();
+			sfd.Filter = "PNG Image|*.png";
+			sfd.OverwritePrompt = true;
+			sfd.ValidateNames = true;
+			Nullable<bool> result = sfd.ShowDialog();
+			if (result == true)
+			{
+				var image = ImageAes.Source as BitmapSource;
+				using (var fs = new FileStream(sfd.FileName, FileMode.Create))
+				{
+					BitmapEncoder encoder = new PngBitmapEncoder();
+					encoder.Frames.Add(BitmapFrame.Create(image));
+					encoder.Save(fs);
+				}
 			}
 		}
 		// Load encrypted files

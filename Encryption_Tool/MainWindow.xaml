@@ -122,10 +122,15 @@
                         <Label HorizontalAlignment="Center" Content="Local Image" />
                         <Button
                             Name="BtnAESImage"
-                            Margin="10,10"
+                            Margin="10"
                             Click="BtnAESImage_Click"
                             Content="Search PNG image">
                         </Button>
+                        <Button
+                            x:Name="BtnAesSaveImage"
+                            Margin="10,0"
+                            Click="BtnAesSaveImage_Click"
+                            Content="Save Image" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="4">
