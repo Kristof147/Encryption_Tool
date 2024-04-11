@@ -40,21 +40,29 @@ namespace Encryption_Tool.Crypto.Cryptors
 			string text = string.Empty;
 			if (request.Parameters.GetParameters(out Aes aes))
 			{
-				using (aes)
+				try
 				{
-					ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
-					using (MemoryStream msDecrypt = new(request.DataToDecrypt))
+					using (aes)
 					{
-						using (CryptoStream csDecrypt = new(msDecrypt, decryptor, CryptoStreamMode.Read))
+						ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+						using (MemoryStream msDecrypt = new(request.DataToDecrypt))
 						{
-							using (MemoryStream msPlain = new())
+							using (CryptoStream csDecrypt = new(msDecrypt, decryptor, CryptoStreamMode.Read))
 							{
-								csDecrypt.CopyTo(msPlain);
-								result.Data = msPlain.ToArray();
+								using (MemoryStream msPlain = new())
+								{
+									csDecrypt.CopyTo(msPlain);
+									result.Data = msPlain.ToArray();
+								}
 							}
 						}
 					}
 				}
+				catch (CryptographicException ex)
+				{
+					MessageBox.Show("Er is een fout opgetreden bij het decrypteren: " + ex.Message);
+				}
+
 			}
 			return result;
 		}

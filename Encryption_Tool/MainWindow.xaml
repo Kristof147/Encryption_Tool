@@ -55,6 +55,7 @@
                     <Button Grid.Column="1" Margin="20" Name="BtnAESEncrypt" Content="Encrypt" Click="BtnAESEncrypt_Click"  ></Button>
                     <Button Grid.Column="2" Margin="20" Name="BtnAESDecrypt" Content="Decrypt" Click="BtnAESDecrypt_Click" ></Button>
                     <Button Grid.Column="3" Margin="20" Name="BtnAESImage" Content="Select Image" Click="BtnAESImage_Click"></Button>
+                    <Image Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="3" Margin="15" x:Name="ImageAes"/>
                 </Grid>
             </TabItem>
             <TabItem Header="RSA">

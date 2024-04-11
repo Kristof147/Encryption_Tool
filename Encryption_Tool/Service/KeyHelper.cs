@@ -7,10 +7,11 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
 namespace Encryption_Tool.Service
 {
-    public class KeyHelper
+    public static class KeyHelper
     {
         static void GenerateRSAKey(out string publickey, out string privatekey)
         {
@@ -19,7 +20,7 @@ namespace Encryption_Tool.Service
             privatekey = Convert.ToBase64String(rsa.ExportRSAPrivateKey());
 
         }
-        static void GenerateAESKey(string[] args)
+        public static void GenerateAESKey()
         {
             // Create an instance of the AES crypto provider
             using (AesCryptoServiceProvider aes = new AesCryptoServiceProvider())
