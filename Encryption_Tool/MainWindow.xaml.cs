@@ -1,6 +1,7 @@
 ﻿using Encryption_Tool.Crypto.Cryptors;
 using Encryption_Tool.EncryptionEngine.models;
 using Encryption_Tool.Service;
+using Microsoft.VisualBasic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -22,11 +23,12 @@ namespace Encryption_Tool
 	public partial class MainWindow : Window
 	{
 
-		private Dictionary<string, string>? aesKeysDict;
+		private Dictionary<string, Aes>? aesKeysDict;
 		private readonly FileManager fm;
-		string keyDirectoryPath = @"C:\test";
+		string keyDirectoryPath = Properties.Settings.Default.KeyDirectoryPath;
 		string imageDirectoryPath = @"C:\test";
 		string aESDirectoryPath = @"C:\test";
+		string aesImagePath = "";
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -40,6 +42,8 @@ namespace Encryption_Tool
 			string privateKey;
 
 			KeyHelper.SaveKeys(out publicKey, out privateKey);
+			CmbAESKeys.Items.Clear();
+			InitializeKeys();
 			//txtPublicKey.Text = publicKey;
 			//txtPrivateKey.Text = privateKey;
 		}
@@ -47,20 +51,25 @@ namespace Encryption_Tool
 
 		private void InitializeKeys()
 		{
-			aesKeysDict = new Dictionary<string, string>();
+			aesKeysDict = new Dictionary<string, Aes>();
 
 
 			if (Directory.Exists(keyDirectoryPath))
 			{
-				string[] files = Directory.GetFiles(keyDirectoryPath, "*.txt");
+				string[] files = Directory.GetFiles(keyDirectoryPath, "*.xml");
 
 				foreach (string file in files)
 				{
 					string fileName = Path.GetFileName(file);
-					string base64Key = File.ReadAllText(file).Trim();
-
-					aesKeysDict.Add(fileName, base64Key);
-					CmbAESKeys.Items.Add(fileName);
+					if (fileName.Contains("_key.xml"))
+					{
+						Aes aes = Aes.Create();
+						aes.Key = KeyHelper.DeserializeAes(file);
+						string aesIv = file.Replace("_key.xml", "_iv.xml");
+						aes.IV = KeyHelper.DeserializeAes(aesIv);
+						aesKeysDict.Add(fileName, aes);
+						CmbAESKeys.Items.Add(fileName.Replace("_key.xml", ""));
+					}
 				}
 			}
 
@@ -72,13 +81,17 @@ namespace Encryption_Tool
 			if (!string.IsNullOrEmpty(selectedDirectory))
 			{
 				keyDirectoryPath = selectedDirectory;
+				Properties.Settings.Default.KeyDirectoryPath = keyDirectoryPath;
+				Properties.Settings.Default.Save();
 				InitializeKeys();
 			}
 		}
 
 		private void BtnAES_Click(object sender, RoutedEventArgs e)
 		{
-			KeyHelper.GenerateAESKey();
+			var input = Interaction.InputBox("Geef de naam van uw AES sleutel", "Aes Key Generate", "MyAesKey");
+			if (!string.IsNullOrWhiteSpace(input))
+				KeyHelper.GenerateAESKey(keyDirectoryPath, input);
 		}
 		private void BtnRSAPair_Click(object sender, RoutedEventArgs e)
 		{
@@ -140,68 +153,72 @@ namespace Encryption_Tool
 
 		private void BtnAESEncrypt_Click(object sender, RoutedEventArgs e)
 		{
-			//EncryptionEngine.CryptoEngine engine = new();
-			//CryptoParameters cryptoParameters = new() { Aes = aes };
-			//EncryptionRequest encryptRequest = new()
-			//{
-			//	DataToEncrypt = ImageHelper.ImageToByteArray(""),
-			//	EncryptionType = EncryptionType.AES,
-			//	Parameters = cryptoParameters
-			//};
-			//var response = engine.Encrypt(encryptRequest);
-			//if (response.Success)
-			//{
-			//	var result = Convert.ToBase64String(response.Data);
+			if (CmbAESKeys.SelectedIndex < 0)
+				return;
 
-			//	Microsoft.Win32.SaveFileDialog sfd = new()
-			//	{
-			//		InitialDirectory = imageDirectoryPath,
-			//		Filter = "Text Files|*.b64",
-			//		FileName = "EncryptionName",
-			//		DefaultExt = "b64",
-			//		OverwritePrompt = true,
-			//		ValidateNames = true
-			//	};
-			//	Nullable<bool> sfdResult = sfd.ShowDialog();
-			//	if (sfdResult == true)
-			//	{
-			//		byte[] bytesToWrite = Encoding.UTF8.GetBytes(result);
-			//		File.WriteAllBytes(sfd.FileName, bytesToWrite);
-			//	}
-			//}
-			//else
-			//	MessageBox.Show("Er ging iets fout, probeer later opnieuw");
+			EncryptionEngine.CryptoEngine engine = new();
+			CryptoParameters cryptoParameters = new() { Aes = aesKeysDict[$"{CmbAESKeys.SelectedItem}_key.xml"] };
+			EncryptionRequest encryptRequest = new()
+			{
+				DataToEncrypt = ImageHelper.ImageToByteArray(aesImagePath),
+				EncryptionType = EncryptionType.AES,
+				Parameters = cryptoParameters
+			};
+			var response = engine.Encrypt(encryptRequest);
+			if (response.Success)
+			{
+				var result = Convert.ToBase64String(response.Data);
+
+				Microsoft.Win32.SaveFileDialog sfd = new()
+				{
+					InitialDirectory = imageDirectoryPath,
+					Filter = "Base64|*.b64",
+					FileName = "EncryptionName",
+					DefaultExt = "b64",
+					OverwritePrompt = true,
+					ValidateNames = true
+				};
+				Nullable<bool> sfdResult = sfd.ShowDialog();
+				if (sfdResult == true)
+				{
+					byte[] bytesToWrite = Encoding.UTF8.GetBytes(result);
+					File.WriteAllBytes(sfd.FileName, bytesToWrite);
+				}
+			}
+			else
+				MessageBox.Show("Er ging iets fout, probeer later opnieuw");
 		}
 
 		private void BtnAESDecrypt_Click(object sender, RoutedEventArgs e)
 		{
-			//OpenFileDialog ofd = new();
-			//ofd.InitialDirectory = imageDirectoryPath;
-			//ofd.Filter = "Text Files|*.txt";
-			//if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-			//{
-			//	EncryptionEngine.CryptoEngine engine = new();
-			//	CryptoParameters cryptoParameters = new() { Aes = aes };
-			//	DecryptionRequest decryptRequest = new()
-			//	{
-			//		DataToDecrypt = ImageHelper.ImageToByteArray(ofd.FileName),
-			//		EncryptionType = EncryptionType.AES,
-			//		Parameters = cryptoParameters
-			//	};
-			//	var response = engine.Decryption(decryptRequest);
-			//	var image = ImageHelper.ByteArrayToImage(response.Data);
-			//	ImageAes.Source = image;
-			//}
+			OpenFileDialog ofd = new();
+			ofd.InitialDirectory = imageDirectoryPath;
+			ofd.Filter = "Base64|*.b64";
+			if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+			{
+				EncryptionEngine.CryptoEngine engine = new();
+				CryptoParameters cryptoParameters = new() { Aes = aesKeysDict[$"{CmbAESKeys.SelectedItem}_key.xml"] };
+				DecryptionRequest decryptRequest = new()
+				{
+					DataToDecrypt = ImageHelper.ImageToByteArray(ofd.FileName),
+					EncryptionType = EncryptionType.AES,
+					Parameters = cryptoParameters
+				};
+				var response = engine.Decryption(decryptRequest);
+				var image = ImageHelper.ByteArrayToImage(response.Data);
+				ImageAes.Source = image;
+			}
 		}
 
 		private void BtnAESImage_Click(object sender, RoutedEventArgs e)
 		{
-			string imagePath = ImageHelper.LoadImage();
-			if (!string.IsNullOrEmpty(imagePath))
+			aesImagePath = ImageHelper.LoadImage();
+			if (!string.IsNullOrEmpty(aesImagePath))
 			{
-				ImageAes.Source = new BitmapImage(new Uri(imagePath));
+				ImageAes.Source = new BitmapImage(new Uri(aesImagePath));
 			}
 		}
+
 		#endregion
 		#region RSA tab
 		private void BtnRSAEncrypt_Click(object sender, RoutedEventArgs e)
