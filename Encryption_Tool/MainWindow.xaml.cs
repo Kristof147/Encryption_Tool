@@ -59,14 +59,12 @@ namespace Encryption_Tool
 				foreach (string file in files)
 				{
 					string fileName = Path.GetFileName(file);
-					if (fileName.Contains("_key.xml"))
+					if (fileName.Contains(".xml"))
 					{
 						Aes aes = Aes.Create();
 						aes.Key = KeyHelper.DeserializeAes(file);
-						string aesIv = file.Replace("_key.xml", "_iv.xml");
-						aes.IV = KeyHelper.DeserializeAes(aesIv);
 						aesKeysDict.Add(fileName, aes);
-						CmbAESKeys.Items.Add(fileName.Replace("_key.xml", ""));
+						CmbAESKeys.Items.Add(fileName.Replace(".xml", ""));
 					}
 				}
 			}
@@ -157,7 +155,7 @@ namespace Encryption_Tool
 				return;
 
 			EncryptionEngine.CryptoEngine engine = new();
-			CryptoParameters cryptoParameters = new() { Aes = aesKeysDict[$"{CmbAESKeys.SelectedItem}_key.xml"] };
+			CryptoParameters cryptoParameters = new() { Aes = aesKeysDict[$"{CmbAESKeys.SelectedItem}.xml"] };
 			EncryptionRequest encryptRequest = new()
 			{
 				DataToEncrypt = ChkAesText.IsChecked == true ? Encoding.UTF8.GetBytes(TxtAes.Text) : ImageHelper.ImageToByteArray(aesImagePath),
@@ -194,10 +192,15 @@ namespace Encryption_Tool
 		// Decryption
 		private void BtnAESDecrypt_Click(object sender, RoutedEventArgs e)
 		{
+			if (string.IsNullOrWhiteSpace(TxtAes.Text))
+				return;
+
 			try
 			{
 				EncryptionEngine.CryptoEngine engine = new();
-				CryptoParameters cryptoParameters = new() { Aes = aesKeysDict[$"{CmbAESKeys.SelectedItem}_key.xml"] };
+				Aes aes = Aes.Create();
+				aes.Key = aesKeysDict[$"{CmbAESKeys.SelectedItem}.xml"].Key;
+				CryptoParameters cryptoParameters = new() { Aes = aes };
 				//string base64String = File.ReadAllText(ofd.FileName);
 				string base64String = TxtAes.Text;
 				byte[] dataToDecrypt = Convert.FromBase64String(base64String);
@@ -232,6 +235,7 @@ namespace Encryption_Tool
 				MessageBox.Show("Er is een fout opgetreden:\n" + ex.Message);
 			}
 		}
+
 		// Image
 		private void BtnAESImage_Click(object sender, RoutedEventArgs e)
 		{
@@ -248,6 +252,7 @@ namespace Encryption_Tool
 
 			Microsoft.Win32.SaveFileDialog sfd = new();
 			sfd.Filter = "PNG Image|*.png";
+			sfd.FileName = "DecryptedImages";
 			sfd.OverwritePrompt = true;
 			sfd.ValidateNames = true;
 			Nullable<bool> result = sfd.ShowDialog();
@@ -314,6 +319,17 @@ namespace Encryption_Tool
 			}
 		}
 
+		// Clear
+		private void BtnAesClearText(object sender, RoutedEventArgs e)
+		{
+			TxtAes.Clear();
+		}
+
+		private void BtnAesClearImage(object sender, RoutedEventArgs e)
+		{
+			ImageAes.Source = null;
+		}
+
 		#endregion
 
 		#region RSA tab
@@ -343,5 +359,6 @@ namespace Encryption_Tool
 		}
 
 		#endregion
+
 	}
 }

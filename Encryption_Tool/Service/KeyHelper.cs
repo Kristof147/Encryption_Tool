@@ -27,22 +27,16 @@ namespace Encryption_Tool.Service
 			{
 				// Generate a random 256-bit key
 				aes.GenerateKey();
-				aes.GenerateIV();
 
-				// Serialize the key and iv to XML
-				using (TextWriter writer = new StreamWriter(@$"{path}\{fileName}_key.xml"))
+				// Serialize the key to XML
+				using (TextWriter writer = new StreamWriter(@$"{path}\{fileName}.xml"))
 				{
 					XmlSerializer keySerializer = new XmlSerializer(typeof(byte[]));
 					keySerializer.Serialize(writer, aes.Key);
 				}
-				using (StreamWriter writer = new($@"{path}\{fileName}_iv.xml"))
-				{
-					XmlSerializer ivSerializer = new(typeof(byte[]));
-					ivSerializer.Serialize(writer, aes.IV);
-				}
 			}
 
-			Console.WriteLine($"AES key and IV generated and saved to {fileName}_key.xml and {fileName}_iv.xml.");
+			Console.WriteLine($"AES key generated and saved to {fileName}.xml.");
 		}
 
 		public static byte[] DeserializeAes(string value)

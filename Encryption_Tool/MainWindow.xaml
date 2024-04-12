@@ -79,10 +79,11 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition MaxHeight="100" />
+                        <RowDefinition Height="auto" />
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
+                        <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
 
                     <StackPanel>
@@ -161,6 +162,24 @@
                         Grid.Column="2"
                         Grid.ColumnSpan="2"
                         Margin="15" />
+
+                    <Button
+                        Grid.Row="4"
+                        Grid.ColumnSpan="2"
+                        Margin="5"
+                        Padding="3"
+                        HorizontalAlignment="Center"
+                        Click="BtnAesClearText"
+                        Content="Clear Text" />
+                    <Button
+                        Grid.Row="4"
+                        Grid.Column="2"
+                        Grid.ColumnSpan="2"
+                        Margin="5"
+                        Padding="3"
+                        HorizontalAlignment="Center"
+                        Click="BtnAesClearImage"
+                        Content="Clear Image" />
                 </Grid>
             </TabItem>
             <TabItem Header="RSA">
