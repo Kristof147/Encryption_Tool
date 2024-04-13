@@ -12,9 +12,13 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Bestand">
-                <MenuItem Header="Afsluiten" />
+                <MenuItem Header="Folder instellen" Click="MenuItemFolderInstellen_Click"/>
+                <MenuItem Header="Afsluiten" Click="MenuItemAfsluiten_Click"/>
             </MenuItem>
-            <MenuItem Header="Opties"></MenuItem>
+            <MenuItem Header="AES">
+                <MenuItem Header="Aes set image path" Click="MenuItemImagePath_Click"/>
+                <MenuItem Header="Aes set text path" Click="MenuItemTextPath_Click"/>
+            </MenuItem>
         </Menu>
 
         <StatusBar DockPanel.Dock="Bottom">

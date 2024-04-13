@@ -34,7 +34,7 @@ namespace Encryption_Tool.Pages
         public AESPage()
         {
             InitializeComponent();
-            InitializeKeys():
+            InitializeKeys();
         }
         private void InitializeKeys()
         {
