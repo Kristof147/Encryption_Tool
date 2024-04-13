@@ -20,9 +20,12 @@ namespace Encryption_Tool.Crypto.Cryptors
 			EncryptionResult result = new();
 			if (request.Parameters.GetParameters(out Aes aes))
 			{
+				aes.GenerateIV();
 				ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
 				using (MemoryStream msEncrypt = new())
 				{
+					msEncrypt.Write(aes.IV, 0, aes.IV.Length);
+
 					using (CryptoStream csEncrypt = new(msEncrypt, encryptor, CryptoStreamMode.Write))
 					{
 						csEncrypt.Write(request.DataToEncrypt, 0, request.DataToEncrypt.Length);
@@ -36,16 +39,19 @@ namespace Encryption_Tool.Crypto.Cryptors
 
 		public override DecryptionResult Decrypt(DecryptionRequest request)
 		{
+			byte[] iv = new byte[16];
+			Array.Copy(request.DataToDecrypt, 0, iv, 0, 16);
+
 			DecryptionResult result = new();
-			string text = string.Empty;
 			if (request.Parameters.GetParameters(out Aes aes))
 			{
+				aes.IV = iv;
 				try
 				{
 					using (aes)
 					{
 						ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
-						using (MemoryStream msDecrypt = new(request.DataToDecrypt))
+						using (MemoryStream msDecrypt = new(request.DataToDecrypt, 16, request.DataToDecrypt.Length - 16))
 						{
 							using (CryptoStream csDecrypt = new(msDecrypt, decryptor, CryptoStreamMode.Read))
 							{
