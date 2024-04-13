@@ -1,0 +1,96 @@
+﻿<Page x:Class="Encryption_Tool.Pages.AESPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Encryption_Tool.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AESPage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="100" />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <Label Content="Key:" />
+            <ComboBox Name="CmbAESKeys" Margin="10,0">
+            </ComboBox>
+            <Label Content="Encryption type:" />
+            <StackPanel Margin="10,0" Orientation="Horizontal">
+                <RadioButton
+            x:Name="ChkAesText"
+            Content="Text"
+            IsChecked="True" />
+                <RadioButton
+            x:Name="ChkAesImage"
+            Margin="10,0"
+            Content="Image" />
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1">
+            <Label HorizontalAlignment="Center" Content="Encryption" />
+            <Button
+        Name="BtnAESEncrypt"
+        Margin="10"
+        Click="BtnAESEncrypt_Click"
+        Content="Encrypt">
+            </Button>
+            <Button
+        Name="BtnAESDecrypt"
+        Margin="10,0"
+        Click="BtnAESDecrypt_Click"
+        Content="Decrypt">
+            </Button>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2">
+            <Label HorizontalAlignment="Center" Content="Local Image" />
+            <Button
+        Name="BtnAESImage"
+        Margin="10,10"
+        Click="BtnAESImage_Click"
+        Content="Search PNG image">
+            </Button>
+        </StackPanel>
+
+        <StackPanel Grid.Column="4">
+            <Label HorizontalAlignment="Center" Content="Load" />
+            <Button
+        x:Name="BtnAesLoadText"
+        Margin="10"
+        Click="BtnAesLoadText_Click"
+        Content="Encrypted Text" />
+            <Button
+        x:Name="BtnAesLoadImage"
+        Margin="10,0"
+        Click="BtnAesLoadImage_Click"
+        Content="Encrypted PNG" />
+        </StackPanel>
+
+        <TextBox
+    x:Name="TxtAes"
+    Grid.Row="1"
+    Grid.RowSpan="3"
+    Grid.ColumnSpan="2"
+    Margin="15"
+    AcceptsReturn="True" />
+        <Image
+    x:Name="ImageAes"
+    Grid.Row="1"
+    Grid.RowSpan="3"
+    Grid.Column="2"
+    Grid.ColumnSpan="2"
+    Margin="15" />
+    </Grid>
+</Page>

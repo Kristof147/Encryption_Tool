@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Encryption_Tool.Service
 {
@@ -21,7 +22,7 @@ namespace Encryption_Tool.Service
                 }
                 else
                 {
-                    return null; // User canceled or no path selected
+                    return null; 
                 }
             }
         }
