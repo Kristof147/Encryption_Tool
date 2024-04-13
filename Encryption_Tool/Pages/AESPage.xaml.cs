@@ -25,16 +25,16 @@ namespace Encryption_Tool.Pages
     /// </summary>
     public partial class AESPage : Page
     {
-        public Dictionary<string, Aes>? aesKeysDict { get; set; }
-        public string? keyDirectoryPath { get; set; }
-
-        public string? aesImagePath { get; set; }
-        public string? aesTextPath { get; set; }
-
-        private readonly FileManager? fm;
+        private Dictionary<string, Aes>? aesKeysDict;
+        private readonly FileManager fm;
+        string keyDirectoryPath = Properties.Settings.Default.KeyDirectoryPath;
+        string aESDirectoryPath = Properties.Settings.Default.AesFolderPath;
+        string aesImagePath = Properties.Settings.Default.AesImagePath;
+        string aesTextPath = Properties.Settings.Default.AesTextPath;
         public AESPage()
         {
             InitializeComponent();
+            InitializeKeys():
         }
         private void InitializeKeys()
         {
@@ -48,14 +48,12 @@ namespace Encryption_Tool.Pages
                 foreach (string file in files)
                 {
                     string fileName = Path.GetFileName(file);
-                    if (fileName.Contains("_key.xml"))
+                    if (fileName.Contains(".xml"))
                     {
                         Aes aes = Aes.Create();
                         aes.Key = KeyHelper.DeserializeAes(file);
-                        string aesIv = file.Replace("_key.xml", "_iv.xml");
-                        aes.IV = KeyHelper.DeserializeAes(aesIv);
                         aesKeysDict.Add(fileName, aes);
-                        CmbAESKeys.Items.Add(fileName.Replace("_key.xml", ""));
+                        CmbAESKeys.Items.Add(fileName.Replace(".xml", ""));
                     }
                 }
             }
@@ -75,7 +73,7 @@ namespace Encryption_Tool.Pages
                 return;
 
             EncryptionEngine.CryptoEngine engine = new();
-            CryptoParameters cryptoParameters = new() { Aes = aesKeysDict[$"{CmbAESKeys.SelectedItem}_key.xml"] };
+            CryptoParameters cryptoParameters = new() { Aes = aesKeysDict[$"{CmbAESKeys.SelectedItem}.xml"] };
             EncryptionRequest encryptRequest = new()
             {
                 DataToEncrypt = ChkAesText.IsChecked == true ? Encoding.UTF8.GetBytes(TxtAes.Text) : ImageHelper.ImageToByteArray(aesImagePath),
@@ -112,10 +110,15 @@ namespace Encryption_Tool.Pages
         // Decryption
         private void BtnAESDecrypt_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(TxtAes.Text))
+                return;
+
             try
             {
                 EncryptionEngine.CryptoEngine engine = new();
-                CryptoParameters cryptoParameters = new() { Aes = aesKeysDict[$"{CmbAESKeys.SelectedItem}_key.xml"] };
+                Aes aes = Aes.Create();
+                aes.Key = aesKeysDict[$"{CmbAESKeys.SelectedItem}.xml"].Key;
+                CryptoParameters cryptoParameters = new() { Aes = aes };
                 //string base64String = File.ReadAllText(ofd.FileName);
                 string base64String = TxtAes.Text;
                 byte[] dataToDecrypt = Convert.FromBase64String(base64String);
@@ -150,13 +153,36 @@ namespace Encryption_Tool.Pages
                 MessageBox.Show("Er is een fout opgetreden:\n" + ex.Message);
             }
         }
-        // Load Local Image
+
+        // Image
         private void BtnAESImage_Click(object sender, RoutedEventArgs e)
         {
             aesImagePath = ImageHelper.LoadImage();
             if (!string.IsNullOrEmpty(aesImagePath))
             {
                 ImageAes.Source = new BitmapImage(new Uri(aesImagePath));
+            }
+        }
+        private void BtnAesSaveImage_Click(object sender, RoutedEventArgs e)
+        {
+            if (ImageAes.Source == null)
+                return;
+
+            Microsoft.Win32.SaveFileDialog sfd = new();
+            sfd.Filter = "PNG Image|*.png";
+            sfd.FileName = "DecryptedImages";
+            sfd.OverwritePrompt = true;
+            sfd.ValidateNames = true;
+            Nullable<bool> result = sfd.ShowDialog();
+            if (result == true)
+            {
+                var image = ImageAes.Source as BitmapSource;
+                using (var fs = new FileStream(sfd.FileName, FileMode.Create))
+                {
+                    BitmapEncoder encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(image));
+                    encoder.Save(fs);
+                }
             }
         }
         // Load encrypted files
@@ -209,6 +235,17 @@ namespace Encryption_Tool.Pages
                 Properties.Settings.Default.AesTextPath = aesTextPath;
                 Properties.Settings.Default.Save();
             }
+        }
+
+        // Clear
+        private void BtnAesClearText(object sender, RoutedEventArgs e)
+        {
+            TxtAes.Clear();
+        }
+
+        private void BtnAesClearImage(object sender, RoutedEventArgs e)
+        {
+            ImageAes.Source = null;
         }
     }
 }

@@ -24,40 +24,15 @@ namespace Encryption_Tool.Pages
     /// </summary>
     public partial class KeysPage : Page
     {
-        private readonly FileManager? fm; 
-        public string? keyDirectoryPath { get; set; }
-        public Dictionary<string, Aes>? aesKeysDict { get; set; }
+        private Dictionary<string, Aes>? aesKeysDict;
+        private readonly FileManager fm;
+        string keyDirectoryPath = Properties.Settings.Default.KeyDirectoryPath;
+
         public KeysPage()
         {
             InitializeComponent();
         }
-        //private void InitializeKeys()
-        //{
-        //    aesKeysDict = new Dictionary<string, Aes>();
-
-
-        //    if (Directory.Exists(keyDirectoryPath))
-        //    {
-        //        string[] files = Directory.GetFiles(keyDirectoryPath, "*.xml");
-
-        //        foreach (string file in files)
-        //        {
-        //            string fileName = Path.GetFileName(file);
-        //            if (fileName.Contains("_key.xml"))
-        //            {
-        //                Aes aes = Aes.Create();
-        //                aes.Key = KeyHelper.DeserializeAes(file);
-        //                string aesIv = file.Replace("_key.xml", "_iv.xml");
-        //                aes.IV = KeyHelper.DeserializeAes(aesIv);
-        //                aesKeysDict.Add(fileName, aes);
-        //                CmbAESKeys.Items.Add(fileName.Replace("_key.xml", ""));
-        //            }
-        //        }
-        //    }
-        //    if (CmbAESKeys.Items.Count > 0)
-        //        CmbAESKeys.SelectedIndex = 0;
-
-        //}
+        
 
         private void BtnFolderKey_Click(object sender, RoutedEventArgs e)
         {

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,13 +18,15 @@ using System.Windows.Shapes;
 namespace Encryption_Tool.Pages
 {
     /// <summary>
-    /// Interaction logic for RSAPäge.xaml
+    /// Interaction logic for RSAPage.xaml
     /// </summary>
-    public partial class RSAPäge : Page
+    public partial class RSAPage : Page
     {
-        private readonly FileManager? fm; 
-        public string aESDirectoryPath;
-        public RSAPäge()
+        private Dictionary<string, Aes>? aesKeysDict;
+        private readonly FileManager fm;
+        string rSADirectoryPath = Properties.Settings.Default.RsaFolderPath;
+     
+        public RSAPage()
         {
             InitializeComponent();
         }
@@ -48,7 +51,7 @@ namespace Encryption_Tool.Pages
             string selectedDirectory = fm.SelectDirectory();
             if (!string.IsNullOrEmpty(selectedDirectory))
             {
-                aESDirectoryPath = selectedDirectory;
+                rSADirectoryPath = selectedDirectory;
 
             }
         }

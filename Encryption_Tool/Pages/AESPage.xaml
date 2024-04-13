@@ -16,11 +16,13 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition MaxHeight="100" />
+            <RowDefinition Height="auto" />
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
+
         <StackPanel>
             <Label Content="Key:" />
             <ComboBox Name="CmbAESKeys" Margin="10,0">
@@ -28,69 +30,92 @@
             <Label Content="Encryption type:" />
             <StackPanel Margin="10,0" Orientation="Horizontal">
                 <RadioButton
-            x:Name="ChkAesText"
-            Content="Text"
-            IsChecked="True" />
+                x:Name="ChkAesText"
+                Content="Text"
+                IsChecked="True" />
                 <RadioButton
-            x:Name="ChkAesImage"
-            Margin="10,0"
-            Content="Image" />
+                x:Name="ChkAesImage"
+                Margin="10,0"
+                Content="Image" />
             </StackPanel>
         </StackPanel>
 
         <StackPanel Grid.Column="1">
             <Label HorizontalAlignment="Center" Content="Encryption" />
             <Button
-        Name="BtnAESEncrypt"
-        Margin="10"
-        Click="BtnAESEncrypt_Click"
-        Content="Encrypt">
+            Name="BtnAESEncrypt"
+            Margin="10"
+            Click="BtnAESEncrypt_Click"
+            Content="Encrypt">
             </Button>
             <Button
-        Name="BtnAESDecrypt"
-        Margin="10,0"
-        Click="BtnAESDecrypt_Click"
-        Content="Decrypt">
+            Name="BtnAESDecrypt"
+            Margin="10,0"
+            Click="BtnAESDecrypt_Click"
+            Content="Decrypt">
             </Button>
         </StackPanel>
 
         <StackPanel Grid.Column="2">
             <Label HorizontalAlignment="Center" Content="Local Image" />
             <Button
-        Name="BtnAESImage"
-        Margin="10,10"
-        Click="BtnAESImage_Click"
-        Content="Search PNG image">
+            Name="BtnAESImage"
+            Margin="10"
+            Click="BtnAESImage_Click"
+            Content="Search PNG image">
             </Button>
+            <Button
+            x:Name="BtnAesSaveImage"
+            Margin="10,0"
+            Click="BtnAesSaveImage_Click"
+            Content="Save Image" />
         </StackPanel>
 
         <StackPanel Grid.Column="4">
             <Label HorizontalAlignment="Center" Content="Load" />
             <Button
-        x:Name="BtnAesLoadText"
-        Margin="10"
-        Click="BtnAesLoadText_Click"
-        Content="Encrypted Text" />
+            x:Name="BtnAesLoadText"
+            Margin="10"
+            Click="BtnAesLoadText_Click"
+            Content="Encrypted Text" />
             <Button
-        x:Name="BtnAesLoadImage"
-        Margin="10,0"
-        Click="BtnAesLoadImage_Click"
-        Content="Encrypted PNG" />
+            x:Name="BtnAesLoadImage"
+            Margin="10,0"
+            Click="BtnAesLoadImage_Click"
+            Content="Encrypted PNG" />
         </StackPanel>
 
         <TextBox
-    x:Name="TxtAes"
-    Grid.Row="1"
-    Grid.RowSpan="3"
-    Grid.ColumnSpan="2"
-    Margin="15"
-    AcceptsReturn="True" />
+        x:Name="TxtAes"
+        Grid.Row="1"
+        Grid.RowSpan="3"
+        Grid.ColumnSpan="2"
+        Margin="15"
+        AcceptsReturn="True" />
         <Image
-    x:Name="ImageAes"
-    Grid.Row="1"
-    Grid.RowSpan="3"
-    Grid.Column="2"
-    Grid.ColumnSpan="2"
-    Margin="15" />
+        x:Name="ImageAes"
+        Grid.Row="1"
+        Grid.RowSpan="3"
+        Grid.Column="2"
+        Grid.ColumnSpan="2"
+        Margin="15" />
+
+        <Button
+        Grid.Row="4"
+        Grid.ColumnSpan="2"
+        Margin="5"
+        Padding="3"
+        HorizontalAlignment="Center"
+        Click="BtnAesClearText"
+        Content="Clear Text" />
+        <Button
+        Grid.Row="4"
+        Grid.Column="2"
+        Grid.ColumnSpan="2"
+        Margin="5"
+        Padding="3"
+        HorizontalAlignment="Center"
+        Click="BtnAesClearImage"
+        Content="Clear Image" />
     </Grid>
 </Page>
