@@ -54,27 +54,5 @@ namespace Encryption_Tool.Pages
             }
         }
 
-        private void BtnHash_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new()
-            {
-                Filter = "All Files (*.*)|*.*",
-                Multiselect = true
-            };
-
-            if (openFileDialog.ShowDialog() == DialogResult.Cancel)
-                return;
-            if (openFileDialog.FileNames.Length != 2)
-            {
-                System.Windows.MessageBox.Show("Please select exactly two files.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            string hash1 = HashingHelper.ComputeFileHash(openFileDialog.FileNames[0]);
-            string hash2 = HashingHelper.ComputeFileHash(openFileDialog.FileNames[1]);
-
-            string message = $"Hash of file 1:\n{hash1}\n\nHash of file 2:\n{hash2}\n\nThe hashes are {(hash1 == hash2 ? "the same" : "different")}";
-            System.Windows.MessageBox.Show(message, "Hash Comparison Result using SHA256", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
     }
 }

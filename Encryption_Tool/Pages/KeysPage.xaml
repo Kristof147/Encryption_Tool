@@ -39,12 +39,6 @@
             Click="BtnRSAPair_Click"
             Content="Generate RSA key pair">
         </Button>
-        <Button
-            Name="BtnHash"
-            Grid.Row="2"
-            Grid.Column="2"
-            Margin="20,20,20,20"
-            Content="Generate Hashes" Click="BtnHash_Click" />
 
 
     </Grid>
