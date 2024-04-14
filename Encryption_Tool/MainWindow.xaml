@@ -1,29 +1,41 @@
 ﻿<Window
+    Title="Encryption Application"
     x:Class="Encryption_Tool.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Encryption_Tool"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="MainWindow"
     Width="800"
     Height="450"
     mc:Ignorable="d">
     <DockPanel>
-        <Menu DockPanel.Dock="Top" Background="Black">
-            <MenuItem Header="Bestand" Foreground="White">
-                <MenuItem Header="Folder instellen" Click="MenuItemFolderInstellen_Click" Foreground="Black"/>
-                <MenuItem Header="Afsluiten" Click="MenuItemAfsluiten_Click" Foreground="Black"/>
+        <Menu Background="Black" DockPanel.Dock="Top">
+            <MenuItem Foreground="White" Header="Bestand">
+                <MenuItem
+                    Click="MenuItemFolderInstellen_Click"
+                    Foreground="Black"
+                    Header="Folder instellen" />
+                <MenuItem
+                    Click="MenuItemAfsluiten_Click"
+                    Foreground="Black"
+                    Header="Afsluiten" />
             </MenuItem>
-            <MenuItem Header="AES" Foreground="White">
-                <MenuItem Header="Aes set image path" Click="MenuItemImagePath_Click" Foreground="Black"/>
-                <MenuItem Header="Aes set text path" Click="MenuItemTextPath_Click" Foreground="Black"/>
+            <MenuItem Foreground="White" Header="AES">
+                <MenuItem
+                    Click="MenuItemImagePath_Click"
+                    Foreground="Black"
+                    Header="Aes set image path" />
+                <MenuItem
+                    Click="MenuItemTextPath_Click"
+                    Foreground="Black"
+                    Header="Aes set text path" />
             </MenuItem>
         </Menu>
 
-        <StatusBar DockPanel.Dock="Bottom" Background="Black">
+        <StatusBar Background="Black" DockPanel.Dock="Bottom">
             <StatusBarItem DockPanel.Dock="Right">
-                <Label Name="LblDate" Foreground="White"/>
+                <Label Name="LblDate" Foreground="White" />
             </StatusBarItem>
         </StatusBar>
 
@@ -32,21 +44,53 @@
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <DockPanel Background="Black">
-                <StackPanel Style="{StaticResource SpMenu}" Name="SpMenu" Margin="0" Background="Black">
-                    <Grid Height="1" Background="Black"/>
-                    <Button x:Name="BtnHome" Content="Home"  BorderThickness="1 0 0 1" Click="BtnHome_Click" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="10"/>
-                    <Button x:Name="BtnMenuKeys" Content="Generate keys" Click="BtnMenuKeys_Click_1"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="10"/>
-                    <Button x:Name="BtnMenuAES" Content="AES" Click="BtnMenuAES_Click_1"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="10"/>
-                    <Button x:Name="BtnMenuRSA" Content="RSA" Click="BtnMenuRSA_Click"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="10" />
-                  
-                 
+                <StackPanel
+                    Name="SpMenu"
+                    Margin="0"
+                    Background="Black"
+                    Style="{StaticResource SpMenu}">
+                    <Grid Height="1" Background="Black" />
+                    <Button x:Name="BtnHome"
+                        Padding="10"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        BorderThickness="1,0,0,1"
+                        Click="BtnHome_Click"
+                        Content="Home" />
+                    <Button x:Name="BtnMenuKeys"
+                        Padding="10"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Click="BtnMenuKeys_Click_1"
+                        Content="Generate keys" />
+                    <Button x:Name="BtnMenuAES"
+                        Padding="10"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Click="BtnMenuAES_Click_1"
+                        Content="AES" />
+                    <Button x:Name="BtnMenuRSA"
+                        Padding="10"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Click="BtnMenuRSA_Click"
+                        Content="RSA" />
+
+
                 </StackPanel>
             </DockPanel>
-            <Frame x:Name="MainFrame" Grid.Column="1" NavigationUIVisibility="Hidden" Padding="10" Margin="0" Background="GhostWhite" BorderThickness=" 0 1 0 0" BorderBrush="Black"/>
+            <Frame x:Name="MainFrame"
+                Grid.Column="1"
+                Margin="0"
+                Padding="10"
+                Background="GhostWhite"
+                BorderBrush="Black"
+                BorderThickness="0,1,0,0"
+                NavigationUIVisibility="Hidden" />
         </Grid>
     </DockPanel>
 </Window>

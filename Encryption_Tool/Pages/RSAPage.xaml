@@ -1,12 +1,14 @@
-﻿<Page x:Class="Encryption_Tool.Pages.RSAPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Encryption_Tool.Pages"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="RSAPage">
+﻿<Page
+    Title="RSAPage"
+    x:Class="Encryption_Tool.Pages.RSAPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Encryption_Tool.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
 
     <Grid Background="GhostWhite">
         <Grid.ColumnDefinitions>
@@ -18,8 +20,8 @@
         <Grid.RowDefinitions>
             <RowDefinition MaxHeight="100" />
             <RowDefinition MaxHeight="100" />
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition MaxHeight="200" />
+            <RowDefinition MaxHeight="100" />
         </Grid.RowDefinitions>
         <Label Content="Public key:">
         </Label>
@@ -28,37 +30,61 @@
         <Label Grid.Row="1" Content="Private key:">
         </Label>
         <ComboBox
-                Name="CmbRSAPriKey"
-                Grid.Row="1"
-                Margin="35">
+            Name="CmbRSAPriKey"
+            Grid.Row="1"
+            Margin="35">
         </ComboBox>
+        <Label Grid.Row="2" Content="Aes Key Filter" />
+
+        <ComboBox
+            Name="CmboFilter"
+            Grid.Row="2"
+            MinWidth="125"
+            MaxHeight="30"
+            Margin="0,30,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="top"
+            SelectionChanged="CmboFilter_SelectionChanged">
+            <ComboBoxItem Content="All" />
+            <ComboBoxItem Content="Encrypted" />
+            <ComboBoxItem Content="Not Encrypted" />
+        </ComboBox>
+        <Label
+            Grid.Row="2"
+            VerticalAlignment="Bottom"
+            Margin="0,0,0,65"
+            Content="Aes Key:" />
+
+        <ComboBox
+            Name="CmbAesKey"
+            Grid.Row="2"
+            MinWidth="125"
+            Margin="0,0,0,25"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            SelectionChanged="CmbAesKey_SelectionChanged">
+        </ComboBox>
+
         <Button
-                Name="BtnRSAEncrypt"
-                Grid.Column="1"
-                Margin="20"
-                Click="BtnRSAEncrypt_Click"
-                Content="Encrypt">
+            Name="BtnRSAEncrypt"
+            Grid.Column="1"
+            Margin="20"
+            Click="BtnRSAEncrypt_Click"
+            Content="Encrypt">
         </Button>
         <Button
-                Name="BtnRSADecrypt"
-                Grid.Column="2"
-                Margin="20"
-                Click="BtnRSADecrypt_Click"
-                Content="Decrypt">
+            Name="BtnRSADecrypt"
+            Grid.Column="2"
+            Margin="20"
+            Click="BtnRSADecrypt_Click"
+            Content="Decrypt">
         </Button>
         <Button
-                Name="BtnRSAImage"
-                Grid.Column="3"
-                Margin="20"
-                Click="BtnRSAImage_Click"
-                Content="Select Image">
-        </Button>
-        <Button
-                Name="BtnRSAFolder"
-                Grid.Column="4"
-                Margin="20"
-                Click="BtnRSAFolder_Click"
-                Content="Set folder">
+            Name="BtnRSAFolder"
+            Grid.Column="4"
+            Margin="20"
+            Click="BtnRSAFolder_Click"
+            Content="Set folder">
         </Button>
     </Grid>
 </Page>

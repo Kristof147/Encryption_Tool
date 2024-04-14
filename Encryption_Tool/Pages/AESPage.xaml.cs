@@ -38,7 +38,7 @@ namespace Encryption_Tool.Pages
         }
         private void InitializeKeys()
         {
-            aesKeysDict = new Dictionary<string, Aes>();
+            aesKeysDict = [];
 
 
             if (Directory.Exists(keyDirectoryPath))
@@ -48,7 +48,12 @@ namespace Encryption_Tool.Pages
                 foreach (string file in files)
                 {
                     string fileName = Path.GetFileName(file);
-                    if (fileName.Contains(".xml"))
+                    using var reader = File.OpenText(file);
+                    string firstLine = reader.ReadLine()?? "";
+                    reader.BaseStream.Position = reader.BaseStream.Length - 20;
+                    string lastLine = reader.ReadToEnd();
+                    reader.Dispose();//disposing the reader because we may be needing to open the stream again. 
+                    if (fileName.Contains(".xml") && lastLine.EndsWith("</base64Binary>")&& firstLine != "<Encrypted>")
                     {
                         Aes aes = Aes.Create();
                         aes.Key = KeyHelper.DeserializeAes(file);
@@ -95,7 +100,7 @@ namespace Encryption_Tool.Pages
                     OverwritePrompt = true,
                     ValidateNames = true
                 };
-                Nullable<bool> sfdResult = sfd.ShowDialog();
+                bool? sfdResult = sfd.ShowDialog();
                 if (sfdResult == true)
                 {
                     byte[] bytesToWrite = Encoding.UTF8.GetBytes(result);
@@ -173,7 +178,7 @@ namespace Encryption_Tool.Pages
             sfd.FileName = "DecryptedImages";
             sfd.OverwritePrompt = true;
             sfd.ValidateNames = true;
-            Nullable<bool> result = sfd.ShowDialog();
+            bool? result = sfd.ShowDialog();
             if (result == true)
             {
                 var image = ImageAes.Source as BitmapSource;

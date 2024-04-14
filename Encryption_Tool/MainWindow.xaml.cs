@@ -70,7 +70,7 @@ namespace Encryption_Tool
 
         //}
 
-        private void Date_Tick(object sender, EventArgs e)
+        private void Date_Tick(object? sender, EventArgs e)
         {
             LblDate.Content = DateTime.Now.ToString("F");
         }

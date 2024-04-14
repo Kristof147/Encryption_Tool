@@ -10,10 +10,9 @@ namespace Encryption_Tool.Service
 {
     public class FileManager 
     {
-
-        public string SelectDirectory()
+        public string? SelectDirectory()
         {
-            using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
+            using (FolderBrowserDialog folderDialog = new())
             {
                 DialogResult result = folderDialog.ShowDialog();
                 if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(folderDialog.SelectedPath))

@@ -13,11 +13,15 @@ namespace Encryption_Tool.EncryptionEngine.Encryptors
         public override EncryptionResult Encrypt(EncryptionRequest request)
         {
             EncryptionResult result = new();
-            if (request.Parameters.GetParameters(out RSAParameters param, out RSAEncryptionPadding padding))
+            if (request.Parameters.GetParameters(out RSA rsa, out RSAEncryptionPadding padding))
             {
-                using (RSA rsa = RSA.Create(param))
+                try
                 {
                     result.Data = rsa.Encrypt(request.DataToEncrypt, padding);
+                }
+                catch (CryptographicException ex)
+                {
+                    result.AddError(ex.Message);
                 }
             }
             return result;
@@ -25,11 +29,15 @@ namespace Encryption_Tool.EncryptionEngine.Encryptors
         public override DecryptionResult Decrypt(DecryptionRequest request)
         {
             DecryptionResult result = new();
-            if (request.Parameters.GetParameters(out RSAParameters param, out RSAEncryptionPadding padding))
+            if (request.Parameters.GetParameters(out RSA rsa, out RSAEncryptionPadding padding))
             {
-                using (RSA rsa = RSA.Create(param))
+                try
                 {
                     result.Data = rsa.Decrypt(request.DataToDecrypt, padding);
+                }
+                catch (CryptographicException ex)
+                {
+                    result.AddError(ex.Message);
                 }
             }
             return result;
