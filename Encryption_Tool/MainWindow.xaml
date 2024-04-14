@@ -77,6 +77,13 @@
                         VerticalContentAlignment="Center"
                         Click="BtnMenuRSA_Click"
                         Content="RSA" />
+                    <Button
+                        x:Name="BtnMenuHash"
+                        Padding="10"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Click="BtnMenuHash_Click"
+                        Content="Check Hash" />
                 </StackPanel>
             </DockPanel>
             <Frame
