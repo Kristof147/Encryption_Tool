@@ -8,8 +8,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-//using MessageBox = System.Windows.MessageBox;
 using Button = System.Windows.Controls.Button;
+using MessageBox = System.Windows.MessageBox;
 
 namespace Encryption_Tool
 {
@@ -78,7 +78,7 @@ namespace Encryption_Tool
         {
             foreach (var btn in SpMenu.Children)
             {
-                if (btn is Button)
+                if (btn is System.Windows.Controls.Button)
                 {
                     (btn as Button).IsEnabled = true;
                     (btn as Button).BorderThickness = new Thickness(1, 0, 1, 1);
@@ -114,6 +114,43 @@ namespace Encryption_Tool
         {
             MainFrame.Content = new Pages.RSAPage();
             EnableAndPrepareButtons((Button)sender);
+        }
+
+        private void MenuItemAfsluiten_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void MenuItemFolderInstellen_Click(object sender, RoutedEventArgs e)
+        {
+            string selectedDirectory = fm.SelectDirectory();
+            if (!string.IsNullOrEmpty(selectedDirectory))
+            {
+                keyDirectoryPath = selectedDirectory;
+                Properties.Settings.Default.KeyDirectoryPath = keyDirectoryPath;
+                Properties.Settings.Default.Save();
+                //InitializeKeys();
+            }
+        }
+        private void MenuItemImagePath_Click(object sender, RoutedEventArgs e)
+        {
+            string selectedDirectory = fm.SelectDirectory();
+            if (!string.IsNullOrEmpty(selectedDirectory))
+            {
+                aesImagePath = selectedDirectory;
+                Properties.Settings.Default.AesImagePath = aesImagePath;
+                Properties.Settings.Default.Save();
+            }
+        }
+        private void MenuItemTextPath_Click(object sender, RoutedEventArgs e)
+        {
+            string selectedDirectory = fm.SelectDirectory();
+            if (!string.IsNullOrEmpty(selectedDirectory))
+            {
+                aesTextPath = selectedDirectory;
+                Properties.Settings.Default.AesTextPath = aesTextPath;
+                Properties.Settings.Default.Save();
+            }
         }
     }
 }

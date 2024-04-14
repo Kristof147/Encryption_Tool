@@ -8,7 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="KeysPage">
 
-    <Grid>
+    <Grid Background="GhostWhite">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
@@ -22,16 +22,10 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Button
-                    Name="BtnFolderKey"
-                    Grid.Column="1"
-                    Margin="20,20,20,20"
-                    Click="BtnFolderKey_Click"
-                    Content="Set folder">
-        </Button>
+
         <Button
                     Name="BtnAES"
-                    Grid.Column="2"
+                    Grid.Column="1"
                     Margin="20,20,20,20"
                     Click="BtnAES_Click"
                     Content="Generate AES key/ IV">
