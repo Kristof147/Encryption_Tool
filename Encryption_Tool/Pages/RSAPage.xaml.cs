@@ -3,6 +3,7 @@ using Encryption_Tool.Service;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -10,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -18,6 +20,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
+using Brushes = System.Windows.Media.Brushes;
+using CheckBox = System.Windows.Controls.CheckBox;
 using MessageBox = System.Windows.MessageBox;
 using Path = System.IO.Path;
 
@@ -45,6 +49,7 @@ namespace Encryption_Tool.Pages
             InitializeKeys();
         }
 
+
         private void InitializeKeys()
         {
             rsaPubKeys = [];
@@ -53,7 +58,7 @@ namespace Encryption_Tool.Pages
             encryptedAesKeys = [];
             DirectoryInfo info = new(keyDirectoryPath);
             DirectoryInfo encryptedpath = new(defaultEncryptedPath);
-            FileInfo[] allKeys = [..info.GetFiles("*.xml").Concat(info.GetFiles("*.b64"))];
+            FileInfo[] allKeys = [.. info.GetFiles("*.xml").Concat(info.GetFiles("*.b64"))];
             if (!encryptedpath.Equals(info))
                 allKeys = [.. allKeys.Concat(encryptedpath.GetFiles("*.xml").Concat(encryptedpath.GetFiles("*.b64")))];
             if (Directory.Exists(keyDirectoryPath))
@@ -71,9 +76,9 @@ namespace Encryption_Tool.Pages
                         RSA rsa = RSA.Create();
                         rsa.FromXmlString(File.ReadAllText(file.FullName));
                         if (file.Name.EndsWith("_private.xml"))
-                            rsaPrivKeys.TryAdd(file.Name.Replace("_private.xml", ""), rsa);
+                            rsaPrivKeys.TryAdd(file.Name.Replace("_private.xml", "(private)"), rsa);
                         else
-                            rsaPubKeys.TryAdd(file.Name.Replace("_public.xml", ""), rsa);
+                            rsaPubKeys.TryAdd(file.Name.Replace("_public.xml", "(public)"), rsa);
                     }
                     else if (firstLine?.StartsWith("<?xml version=\"1.0\" encoding=\"utf-8\"?>") ?? false)
                     {
@@ -86,31 +91,31 @@ namespace Encryption_Tool.Pages
                         aesKeys.TryAdd(file.Name.Replace("_enc.b64", " (encrypted)"), Convert.FromBase64String(reader.ReadToEnd()));
                     }
                 }
-                CmbRSAPubKey.ItemsSource = rsaPubKeys;
-                CmbRSAPriKey.ItemsSource = rsaPrivKeys;
-                CmbAesKey.ItemsSource = aesKeys;
+                LstBoxKeys.ItemsSource = rsaPubKeys.Concat(rsaPrivKeys);
+                //CmbRSAPriKey.ItemsSource = rsaPrivKeys;
+                LstBoxAesKeys.ItemsSource = aesKeys;
 
-                CmbRSAPubKey.DisplayMemberPath = CmbRSAPriKey.DisplayMemberPath = CmbAesKey.DisplayMemberPath = "Key";
-                CmbRSAPubKey.SelectedValuePath = CmbRSAPriKey.SelectedValuePath = CmbAesKey.SelectedValuePath = "Value";
+                LstBoxKeys.DisplayMemberPath = LstBoxAesKeys.DisplayMemberPath = "Key";
+                LstBoxKeys.SelectedValuePath = LstBoxAesKeys.SelectedValuePath = "Value";
             }
         }
-
         private void BtnRSAEncrypt_Click(object sender, RoutedEventArgs e)
         {
-            if (CmbAesKey.SelectedIndex < 0)
+            var pair = (KeyValuePair<string, byte[]>)LstBoxAesKeys.SelectedItem;
+            if (LstBoxAesKeys.SelectedIndex < 0)
             {
                 MessageBox.Show("Selecteer een AES sleutel om te encrypteren", "RSA Encryptie", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            if (CmbRSAPubKey.SelectedIndex < 0 ||
-                CmbRSAPubKey.SelectedValue is not RSA selectedKey)
+            if (LstBoxAesKeys.SelectedIndex < 0 ||
+                LstBoxKeys.SelectedValue is not RSA selectedKey)
             {
                 MessageBox.Show("Selecteer een publieke sleutel om te encrypteren", "RSA Encryptie", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             EncryptionRequest request = new()
             {
-                DataToEncrypt = (byte[])CmbAesKey.SelectedValue,
+                DataToEncrypt = (byte[])LstBoxAesKeys.SelectedValue,
                 EncryptionType = EncryptionType.RSA,
                 Parameters = new CryptoParameters() { RSA = selectedKey }
             };
@@ -120,11 +125,12 @@ namespace Encryption_Tool.Pages
                 MessageBox.Show("Er is iets fout gegaan bij het encrypteren van de AES sleutel", "RSA Encryptie", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+            
             SaveFileDialog sfd = new()
             {
                 InitialDirectory = defaultEncryptedPath,
                 Filter = "(Base 64)|*_enc.b64",
-                FileName = $"{CmbAesKey.Text}_enc.b64"
+                FileName = $"{pair.Key.Replace("public", "")}_enc.b64"
             };
             if (sfd.ShowDialog() != DialogResult.OK)
             {
@@ -138,13 +144,14 @@ namespace Encryption_Tool.Pages
         }
         private void BtnRSADecrypt_Click(object sender, RoutedEventArgs e)
         {
-            if (CmbAesKey.SelectedIndex < 0)
+            var pair = (KeyValuePair<string, byte[]>)LstBoxAesKeys.SelectedItem;
+            if (LstBoxAesKeys.SelectedIndex < 0)
             {
                 MessageBox.Show("Selecteer een AES sleutel om te decrypteren", "RSA Encryptie", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            if (CmbRSAPriKey.SelectedIndex < 0 ||
-                CmbRSAPriKey.SelectedValue is not RSA selectedKey)
+            if (LstBoxKeys.SelectedIndex < 0 ||
+                LstBoxKeys.SelectedValue is not RSA selectedKey)
             {
                 MessageBox.Show("Selecteer een private sleutel om te decryptere", "RSA Encryptie", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -152,7 +159,7 @@ namespace Encryption_Tool.Pages
 
             DecryptionRequest request = new()
             {
-                DataToDecrypt = (byte[])CmbAesKey.SelectedValue,
+                DataToDecrypt = (byte[])LstBoxAesKeys.SelectedValue,
                 EncryptionType = EncryptionType.RSA,
                 Parameters = new CryptoParameters() { RSA = selectedKey }
             };
@@ -167,11 +174,11 @@ namespace Encryption_Tool.Pages
             {
                 InitialDirectory = keyDirectoryPath,
                 Filter = "(*.xml)|*.xml",
-                FileName = $"{CmbAesKey.Text.Replace(" (encrypted)", "")}.xml"
+                FileName = $"{pair.Key.Replace(" (encrypted)", "")}.xml"
             };
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                Aes temp = Aes.Create() ;
+                Aes temp = Aes.Create();
                 temp.Key = response.Data;
                 KeyHelper.SaveAesKey(sfd.FileName, temp);
                 MessageBox.Show("AES sleutel is gedecrypteerd", "RSA Encryptie", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -189,9 +196,9 @@ namespace Encryption_Tool.Pages
             }
         }
 
-        private void CmbAesKey_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void LstAesKey_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (CmbAesKey.SelectedItem is not KeyValuePair<string, byte[]> selectedKey)
+            if (LstBoxAesKeys.SelectedItem is not KeyValuePair<string, byte[]> selectedKey)
                 return;
 
             if (encryptedAesKeys.Contains(selectedKey.Key))
@@ -210,23 +217,55 @@ namespace Encryption_Tool.Pages
                 BtnRSADecrypt.ToolTip = "Deze sleutel is nog niet geencrypteerd";
             }
         }
-
-        private void CmboFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void FilterChecked(object sender, RoutedEventArgs e)
         {
-            if (CmboFilter.SelectedIndex < 0)
+
+            if (sender is not CheckBox checkBox ||aesKeys is null)
                 return;
-            if (CmboFilter.SelectedIndex == 0)
-            {
-                CmbAesKey.ItemsSource = aesKeys;
-            }
-            else if (CmboFilter.SelectedIndex == 1)
-            {
-                CmbAesKey.ItemsSource = aesKeys.Where((keyPair) => encryptedAesKeys.Contains(keyPair.Key));
-            }
-            else if (CmboFilter.SelectedIndex == 2)
-            {
-                CmbAesKey.ItemsSource = aesKeys.Where((keyPair) => !encryptedAesKeys.Contains(keyPair.Key));
-            }
+            ToggelLabelState(checkBox);
         }
+
+        private void ToggelLabelState(CheckBox checkbox)
+        {
+            if (ChkBoxPlain is not null && ChkBoxEncrypted is not null)
+            {
+                if ((ChkBoxPlain.IsChecked??false) && (ChkBoxEncrypted.IsChecked??false))
+                    ToggleFilter(FilterType.All);
+                else if (ChkBoxPlain.IsChecked??false)
+                    ToggleFilter(FilterType.NotEncrypted);
+                else if (ChkBoxEncrypted.IsChecked??false)
+                    ToggleFilter(FilterType.Encrypted);
+                
+            }
+            bool isChecked = checkbox.IsChecked ?? false;
+            checkbox.Foreground = isChecked? Brushes.Green : Brushes.Black;
+            checkbox.FontWeight = isChecked ? FontWeights.Bold : FontWeights.Normal;
+            checkbox.Opacity =isChecked? 1 :  0.5;
+        }
+        private void ToggleFilter(FilterType type)
+        {
+            switch(type)
+            {
+                case FilterType.All:
+                    LstBoxAesKeys.ItemsSource = aesKeys;
+                    LstBoxKeys.ItemsSource = rsaPubKeys.Concat(rsaPrivKeys);
+                    break;
+                case FilterType.Encrypted:
+                    LstBoxAesKeys.ItemsSource = aesKeys.Where((keyPair) => encryptedAesKeys.Contains(keyPair.Key));
+                    LstBoxKeys.ItemsSource =rsaPrivKeys;
+                    break;
+                case FilterType.NotEncrypted:
+                    LstBoxAesKeys.ItemsSource = aesKeys.Where((keyPair) => !encryptedAesKeys.Contains(keyPair.Key));
+                    LstBoxKeys.ItemsSource = rsaPubKeys;
+                    break;
+            }
+
+        }
+    }
+    public enum FilterType
+    {
+        All,
+        Encrypted,
+        NotEncrypted
     }
 }
