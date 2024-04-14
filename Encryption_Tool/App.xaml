@@ -8,14 +8,14 @@
         <Style x:Key="SpMenu" TargetType="StackPanel">
             <Style.Resources>
                 <Style TargetType="Button">
-                    <Setter Property="Background" Value="LightGray"/>
-                    <Setter Property="BorderThickness" Value="0"/>
-                    <Setter Property="Height" Value="50"/>
-                    <Setter Property="FontWeight" Value="DemiBold"/>
-                    <Setter Property="FontSize" Value="17"/>
-                    <Setter Property="BorderThickness" Value="1 0 0 1"/>
-                    <Setter Property="HorizontalContentAlignment" Value="Right"/>
-                    <Setter Property="Padding" Value="0 0 20 0"/>
+                    <Setter Property="Background" Value="LightGray" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Height" Value="50" />
+                    <Setter Property="FontWeight" Value="DemiBold" />
+                    <Setter Property="FontSize" Value="17" />
+                    <Setter Property="BorderThickness" Value="1,0,0,1" />
+                    <Setter Property="HorizontalContentAlignment" Value="Right" />
+                    <Setter Property="Padding" Value="0,0,20,0" />
                 </Style>
             </Style.Resources>
         </Style>

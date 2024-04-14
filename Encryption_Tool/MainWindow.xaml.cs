@@ -115,6 +115,11 @@ namespace Encryption_Tool
             MainFrame.Content = new Pages.RSAPage();
             EnableAndPrepareButtons((Button)sender);
         }
+        private void BtnMenuHash_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Content = new Pages.HashPage();
+            EnableAndPrepareButtons((Button)sender);
+        }
 
         private void MenuItemAfsluiten_Click(object sender, RoutedEventArgs e)
         {
@@ -152,5 +157,7 @@ namespace Encryption_Tool
                 Properties.Settings.Default.Save();
             }
         }
+
+       
     }
 }

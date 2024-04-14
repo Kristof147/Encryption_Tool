@@ -10,30 +10,27 @@
     Height="450"
     mc:Ignorable="d">
     <DockPanel>
-        <Menu Background="Black" DockPanel.Dock="Top">
-            <MenuItem Foreground="White" Header="Bestand">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Bestand">
                 <MenuItem
                     Click="MenuItemFolderInstellen_Click"
-                    Foreground="Black"
+                    Foreground="#1a1a1a"
                     Header="Folder instellen" />
                 <MenuItem
                     Click="MenuItemAfsluiten_Click"
-                    Foreground="Black"
                     Header="Afsluiten" />
             </MenuItem>
-            <MenuItem Foreground="White" Header="AES">
+            <MenuItem Header="AES">
                 <MenuItem
                     Click="MenuItemImagePath_Click"
-                    Foreground="Black"
                     Header="Aes set image path" />
                 <MenuItem
                     Click="MenuItemTextPath_Click"
-                    Foreground="Black"
                     Header="Aes set text path" />
             </MenuItem>
         </Menu>
 
-        <StatusBar Background="Black" DockPanel.Dock="Bottom">
+        <StatusBar Background="#1a1a1a" DockPanel.Dock="Bottom">
             <StatusBarItem DockPanel.Dock="Right">
                 <Label Name="LblDate" Foreground="White" />
             </StatusBarItem>
@@ -47,33 +44,37 @@
                 <ColumnDefinition Width="150" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <DockPanel Background="Black">
+            <DockPanel Background="#1a1a1a">
                 <StackPanel
                     Name="SpMenu"
                     Margin="0"
-                    Background="Black"
+                    Background="Gray"
                     Style="{StaticResource SpMenu}">
-                    <Grid Height="1" Background="Black" />
-                    <Button x:Name="BtnHome"
+                    <Grid Height="1" Background="#1a1a1a" />
+                    <Button
+                        x:Name="BtnHome"
                         Padding="10"
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center"
                         BorderThickness="1,0,0,1"
                         Click="BtnHome_Click"
                         Content="Home" />
-                    <Button x:Name="BtnMenuKeys"
+                    <Button
+                        x:Name="BtnMenuKeys"
                         Padding="10"
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center"
                         Click="BtnMenuKeys_Click_1"
                         Content="Generate keys" />
-                    <Button x:Name="BtnMenuAES"
+                    <Button
+                        x:Name="BtnMenuAES"
                         Padding="10"
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center"
                         Click="BtnMenuAES_Click_1"
                         Content="AES" />
-                    <Button x:Name="BtnMenuRSA"
+                    <Button
+                        x:Name="BtnMenuRSA"
                         Padding="10"
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center"
@@ -83,12 +84,13 @@
 
                 </StackPanel>
             </DockPanel>
-            <Frame x:Name="MainFrame"
+            <Frame
+                x:Name="MainFrame"
                 Grid.Column="1"
                 Margin="0"
                 Padding="10"
                 Background="GhostWhite"
-                BorderBrush="Black"
+                BorderBrush="#1a1a1a"
                 BorderThickness="0,1,0,0"
                 NavigationUIVisibility="Hidden" />
         </Grid>

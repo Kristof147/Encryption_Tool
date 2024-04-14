@@ -16,7 +16,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using MessageBox = System.Windows.Forms.MessageBox;
+using MessageBox = System.Windows.MessageBox;
+
 
 namespace Encryption_Tool.Pages
 {
@@ -137,6 +138,8 @@ namespace Encryption_Tool.Pages
                 var response = engine.Decryption(decryptRequest);
                 if (response.Success)
                 {
+                    string decryptedDataHash = HashingHelper.HashString(Encoding.UTF8.GetString(response.Data));
+                    MessageBox.Show($"Decrypted Data Hash using SHA256: {decryptedDataHash}");
                     if (ChkAesText.IsChecked == true)
                     {
                         TxtAes.Text = Encoding.UTF8.GetString(response.Data);
@@ -147,6 +150,7 @@ namespace Encryption_Tool.Pages
                         ImageAes.Source = image;
                         TxtAes.Text = string.Empty;
                     }
+                    //string
                 }
                 else
                 {
