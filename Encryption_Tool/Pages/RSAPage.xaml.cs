@@ -181,7 +181,7 @@ namespace Encryption_Tool.Pages
                 Aes temp = Aes.Create();
                 temp.Key = response.Data;
                 KeyHelper.SaveAesKey(sfd.FileName, temp);
-                MessageBox.Show("AES sleutel is gedecrypteerd", "RSA Encryptie", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"AES sleutel is gedecrypteerd\n\n file hash: {HashingHelper.ComputeFileHash(sfd.FileName)}", "RSA Encryptie", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
