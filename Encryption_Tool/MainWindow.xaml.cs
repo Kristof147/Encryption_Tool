@@ -30,7 +30,6 @@ namespace Encryption_Tool
 		public MainWindow()
 		{
 			InitializeComponent();
-			//InitializeKeys();
 			fm = new FileManager();
             Owner = this;
             this.Width = 1000;
@@ -41,34 +40,7 @@ namespace Encryption_Tool
             date.Tick += Date_Tick;
             date.Start();
             MainFrame.Content = new Pages.HomePage(); //Default
-
         }
-
-        //private void InitializeKeys()
-        //{
-        //    aesKeysDict = new Dictionary<string, Aes>();
-
-
-        //    if (Directory.Exists(keyDirectoryPath))
-        //    {
-        //        string[] files = Directory.GetFiles(keyDirectoryPath, "*.xml");
-
-        //        foreach (string file in files)
-        //        {
-        //            string fileName = Path.GetFileName(file);
-        //            if (fileName.Contains(".xml"))
-        //            {
-        //                Aes aes = Aes.Create();
-        //                aes.Key = KeyHelper.DeserializeAes(file);
-        //                aesKeysDict.Add(fileName, aes);
-        //                CmbAESKeys.Items.Add(fileName.Replace(".xml", ""));
-        //            }
-        //        }
-        //    }
-        //    if (CmbAESKeys.Items.Count > 0)
-        //        CmbAESKeys.SelectedIndex = 0;
-
-        //}
 
         private void Date_Tick(object? sender, EventArgs e)
         {
@@ -88,10 +60,6 @@ namespace Encryption_Tool
             button.IsEnabled = false;
             button.BorderThickness = new Thickness(1, 0, 0, 1);
         }
-
-		
-
-
         private void BtnHome_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Content = new Pages.HomePage();

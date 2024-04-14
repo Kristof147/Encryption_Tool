@@ -51,8 +51,8 @@
         </ComboBox>
         <Label
             Grid.Row="2"
-            VerticalAlignment="Bottom"
             Margin="0,0,0,65"
+            VerticalAlignment="Bottom"
             Content="Aes Key:" />
 
         <ComboBox

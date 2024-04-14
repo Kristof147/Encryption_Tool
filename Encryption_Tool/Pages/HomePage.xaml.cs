@@ -22,7 +22,7 @@ namespace Encryption_Tool.Pages
     /// </summary>
     public partial class HomePage : Page ,INotifyPropertyChanged
     {
-        private string[] _welcomeMessages = {"Welkom bij de Encryption Tool!", "Van Seppe, Kristof, Benjamin en Islambek" ,"Kies uw optie links om te beginnen!"};
+        private string[] _welcomeMessages = ["Welkom bij de Encryption Tool!", "Van Seppe, Kristof, Benjamin en Islambek", "Kies uw optie links om te beginnen!"];
         private int _currentIndex = 0;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -37,13 +37,13 @@ namespace Encryption_Tool.Pages
             InitializeComponent();
             DataContext = this;
 
-            DispatcherTimer timer = new DispatcherTimer();
+            DispatcherTimer timer = new();
             timer.Interval = TimeSpan.FromSeconds(3);
             timer.Tick += Timer_Tick;
             timer.Start();
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        private void Timer_Tick(object? sender, EventArgs e)
         {
             _currentIndex = (_currentIndex + 1) % _welcomeMessages.Length;
             OnPropertyChanged(nameof(WelcomeText));

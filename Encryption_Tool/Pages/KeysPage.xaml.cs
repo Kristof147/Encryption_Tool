@@ -39,8 +39,6 @@ namespace Encryption_Tool.Pages
             if (!string.IsNullOrWhiteSpace(input))
             {
                 KeyHelper.GenerateAESKey(keyDirectoryPath, input);
-                //CmbAESKeys.Items.Clear();
-                //InitializeKeys();
             }
         }
         private void BtnRSAPair_Click(object sender, RoutedEventArgs e)
@@ -56,44 +54,27 @@ namespace Encryption_Tool.Pages
             }
         }
 
-        //private void LoadKeys()
-        //{
-        //    // Controleer of de map voor sleutels bestaat
-        //    if (!Directory.Exists(keyDirectoryPath))
-        //    {
-        //        Directory.CreateDirectory(keyDirectoryPath);
-        //        return; // Stop als de map niet bestaat (er zijn geen sleutels om te laden)
-        //    }
+        private void BtnHash_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new()
+            {
+                Filter = "All Files (*.*)|*.*",
+                Multiselect = true
+            };
 
-        //    // Laad AES-sleutels
-        //    string[] aesKeyFiles = Directory.GetFiles(keyDirectoryPath, "*.aeskey");
-        //    aesKeysDict = new Dictionary<string, Aes>();
-        //    foreach (string filePath in aesKeyFiles)
-        //    {
-        //        string fileName = Path.GetFileNameWithoutExtension(filePath);
-        //        byte[] keyAndIV = KeyHelper.DeserializeAes(filePath);
-        //        if (keyAndIV != null && keyAndIV.Length >= 48) // Check of de lengte van de sleutel en IV correct is (32 bytes voor de sleutel en 16 bytes voor de IV)
-        //        {
-        //            byte[] key = new byte[32];
-        //            byte[] iv = new byte[16];
-        //            Array.Copy(keyAndIV, key, 32);
-        //            Array.Copy(keyAndIV, 32, iv, 0, 16);
-        //            aesKeysDict.Add(fileName, new AesCryptoServiceProvider() { Key = key, IV = iv });
-        //        }
-        //    }
-        //}
+            if (openFileDialog.ShowDialog() == DialogResult.Cancel)
+                return;
+            if (openFileDialog.FileNames.Length != 2)
+            {
+                System.Windows.MessageBox.Show("Please select exactly two files.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
-        //private void SaveKeys()
-        //{
-        //    // Sla alleen AES-sleutels op, omdat RSA-sleutels al in XML-bestanden worden opgeslagen
-        //    foreach (var entry in aesKeysDict)
-        //    {
-        //        string filePath = Path.Combine(keyDirectoryPath, entry.Key + ".aeskey");
-        //        KeyHelper.SerializeAes(filePath, entry.Value.Key, entry.Value.IV);
-        //    }
-        //}
+            string hash1 = HashingHelper.ComputeFileHash(openFileDialog.FileNames[0]);
+            string hash2 = HashingHelper.ComputeFileHash(openFileDialog.FileNames[1]);
 
-        
-
+            string message = $"Hash of file 1:\n{hash1}\n\nHash of file 2:\n{hash2}\n\nThe hashes are {(hash1 == hash2 ? "the same" : "different")}";
+            System.Windows.MessageBox.Show(message, "Hash Comparison Result using SHA256", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
     }
 }

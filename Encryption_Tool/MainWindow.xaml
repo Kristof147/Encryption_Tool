@@ -36,9 +36,6 @@
             </StatusBarItem>
         </StatusBar>
 
-
-
-
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150" />
@@ -65,7 +62,7 @@
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center"
                         Click="BtnMenuKeys_Click_1"
-                        Content="Generate keys" />
+                        Content="Generate" />
                     <Button
                         x:Name="BtnMenuAES"
                         Padding="10"
@@ -80,8 +77,6 @@
                         VerticalContentAlignment="Center"
                         Click="BtnMenuRSA_Click"
                         Content="RSA" />
-
-
                 </StackPanel>
             </DockPanel>
             <Frame

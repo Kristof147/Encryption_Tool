@@ -28,37 +28,25 @@ namespace Encryption_Tool.Pages
         }
         private void BtnHash_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "All Files (*.*)|*.*"; 
-            openFileDialog.Multiselect = true; 
-
-
-            if (openFileDialog.ShowDialog() == DialogResult.OK) 
+            OpenFileDialog openFileDialog = new()
             {
-                
-                if (openFileDialog.FileNames.Length == 2)
-                {
-                    string filePath1 = openFileDialog.FileNames[0];
-                    string filePath2 = openFileDialog.FileNames[1];
+                Filter = "All Files (*.*)|*.*",
+                Multiselect = true
+            };
 
-                    string hash1 = HashingHelper.ComputeFileHash(filePath1);
-                    string hash2 = HashingHelper.ComputeFileHash(filePath2);
+            if (openFileDialog.ShowDialog() == DialogResult.Cancel)
+            {
+                System.Windows.MessageBox.Show("Please select exactly two files.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
-                    string message = $"Hash of file 1:\n{hash1}\n\nHash of file 2:\n{hash2}";
-                    if (hash1 == hash2)
-                    {
-                        message += "\n\nThe hashes are the same.";
-                    }
-                    else
-                    {
-                        message += "\n\nThe hashes are different.";
-                    }
-                    System.Windows.MessageBox.Show(message, "Hash Comparison Result using SHA256", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                else
-                {
-                    System.Windows.MessageBox.Show("Please select exactly two files.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+            if (openFileDialog.FileNames.Length == 2)
+            {
+                string hash1 = HashingHelper.ComputeFileHash(openFileDialog.FileNames[0]);
+                string hash2 = HashingHelper.ComputeFileHash(openFileDialog.FileNames[1]);
+
+                string message = $"Hash of file 1:\n{hash1}\n\nHash of file 2:\n{hash2}\n\nThe hashes are {(hash1 == hash2 ? "the same" : "different")}";
+                System.Windows.MessageBox.Show(message, "Hash Comparison Result using SHA256", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
     }
