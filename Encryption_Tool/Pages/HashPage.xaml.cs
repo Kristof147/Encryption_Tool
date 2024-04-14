@@ -39,7 +39,11 @@ namespace Encryption_Tool.Pages
                 System.Windows.MessageBox.Show("Please select exactly two files.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-
+            if(openFileDialog.FileNames.Length != 2)
+            {
+                System.Windows.MessageBox.Show("Please select exactly two files.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             if (openFileDialog.FileNames.Length == 2)
             {
                 string hash1 = HashingHelper.ComputeFileHash(openFileDialog.FileNames[0]);
