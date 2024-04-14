@@ -16,7 +16,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using MessageBox = System.Windows.Forms.MessageBox;
+using MessageBox = System.Windows.MessageBox;
+
 
 namespace Encryption_Tool.Pages
 {
@@ -34,7 +35,7 @@ namespace Encryption_Tool.Pages
         public AESPage()
         {
             InitializeComponent();
-            InitializeKeys():
+            InitializeKeys();
         }
         private void InitializeKeys()
         {

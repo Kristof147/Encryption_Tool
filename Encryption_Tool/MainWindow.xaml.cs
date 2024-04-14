@@ -8,7 +8,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using MessageBox = System.Windows.MessageBox;
+//using MessageBox = System.Windows.MessageBox;
+using Button = System.Windows.Controls.Button;
 
 namespace Encryption_Tool
 {
