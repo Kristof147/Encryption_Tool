@@ -22,7 +22,7 @@ namespace Encryption_Tool.Service
                 }
                 else
                 {
-                    return null; 
+                    return string.Empty; 
                 }
             }
         }
