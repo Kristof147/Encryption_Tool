@@ -42,6 +42,7 @@
                     <Button x:Name="BtnMenuKeys" Content="Generate keys" Click="BtnMenuKeys_Click_1"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="10"/>
                     <Button x:Name="BtnMenuAES" Content="AES" Click="BtnMenuAES_Click_1"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="10"/>
                     <Button x:Name="BtnMenuRSA" Content="RSA" Click="BtnMenuRSA_Click"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="10" />
+                    <Button x:Name="BtnMenuHash" Content="Check Hashes"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="10" Click="BtnMenuHash_Click" />
                   
                  
                 </StackPanel>
