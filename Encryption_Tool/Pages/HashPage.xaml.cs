@@ -36,7 +36,6 @@ namespace Encryption_Tool.Pages
 
             if (openFileDialog.ShowDialog() == DialogResult.Cancel)
             {
-                System.Windows.MessageBox.Show("Please select exactly two files.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             if(openFileDialog.FileNames.Length != 2)
