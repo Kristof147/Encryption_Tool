@@ -53,7 +53,7 @@ namespace Encryption_Tool.Pages
                     {
                         message += "\n\nThe hashes are different.";
                     }
-                    System.Windows.MessageBox.Show(message, "Hash Comparison Result", MessageBoxButton.OK, MessageBoxImage.Information);
+                    System.Windows.MessageBox.Show(message, "Hash Comparison Result using SHA256", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {

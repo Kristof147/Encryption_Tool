@@ -134,7 +134,7 @@ namespace Encryption_Tool.Pages
                 if (response.Success)
                 {
                     string decryptedDataHash = HashingHelper.HashString(Encoding.UTF8.GetString(response.Data));
-                    MessageBox.Show($"Decrypted Data Hash: {decryptedDataHash}");
+                    MessageBox.Show($"Decrypted Data Hash using SHA256: {decryptedDataHash}");
                     if (ChkAesText.IsChecked == true)
                     {
                         TxtAes.Text = Encoding.UTF8.GetString(response.Data);
